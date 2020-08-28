@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Create Object from JSON String</h2>
+<p id="demo"></p>
+<script>
+var jsonText = '{ "employees" : [' +
+'{ "name":"Kevin" , "age":"29" },' +
+'{ "name":"David" , "age":"31" },' +
+'{ "name":"Peter" , "age":"27" } ]}';
+
+jsonObject = JSON.parse(jsonText);
+document.getElementById("demo").innerHTML =
+jsonObject.employees[1].name + " " + jsonObject.employees[1].age;
+</script>
+
+</body>
+</html>
