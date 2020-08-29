@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html>
-<body>
-
-<div id="demo">
-
-<h2>The XMLHttpRequest Object</h2>
-
-<button type="button" onclick="loadDoc('ajax_info.txt', myFunction)">Change Content
-</button>
-</div>
-
-<script>
-function loadDoc(url, cFunction) {
-  var xhttp;
-  xhttp=new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      cFunction(this);
+  <head>
+    <script>
+    function loadJSON() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          displayData(this);
+        }
+      };
+      xhttp.open("GET", "https://jsonplaceholder.typicode.com/posts/", true);
+      xhttp.send();
     }
-  };
-  xhttp.open("GET", url, true);
-  xhttp.send();
-}
-function myFunction(xhttp) {
-  document.getElementById("demo").innerHTML =
-  xhttp.responseText;
-}
-</script>
-</body>
+    function displayData(xhttp) {
+      jsonData = JSON.parse(xhttp.responseText);
+      var newContent = "" 
+      for (index in jsonData) {
+        newContent += "<p>" + jsonData[index].body + "</p>";
+      }
+      document.getElementById("json-content").innerHTML = newContent;
+    }
+    function clearJSON() {
+      document.getElementById("json-content").innerHTML = "";
+    }
+    </script>
+  </head>
+
+  <body>
+    <h2>AJAX DEMO</h2>
+    <button type="button" onclick="loadJSON()">Get JSON</button>
+    <button type="button" onclick="clearJSON()">Clear JSON</button>
+    <div id="json-content"></div>
+  </div>
+  </body>
 </html>
