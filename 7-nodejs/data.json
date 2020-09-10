@@ -1,13 +1,1 @@
-[{
-    "name": "Il Brigante",
-    "rating": "5.0",
-    "match": "87",
-    "cuisine": "Italian",
-    "imageUrl": "/image-0.png"
-}, {
-    "name": "Giardino Doro Ristorante",
-    "rating": "5.0",
-    "match": "87",
-    "cuisine": "Italian",
-    "imageUrl": "/image-1.png"
-}]
+[{"name":"Il Brigante","rating":"5.0","match":"87","cuisine":"Italian","imageUrl":"/image-0.png"},{"name":"Giardino Doro Ristorante","rating":"5.0","match":"87","cuisine":"Italian","imageUrl":"/image-1.png"}]
