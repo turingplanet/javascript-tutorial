@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+    function loadJSON() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          displayData(this);
+        }
+      };
+      xhttp.open("GET", "https://gorest.co.in/public-api/users", true);
+      xhttp.send();
+    }
+    function displayData(xhttp) {
+      jsonData = JSON.parse(xhttp.responseText);
+      var newContent = "" 
+      console.log(jsonData.data)
+      for (index in jsonData.data) {
+        newContent += "<p>" + jsonData.data[index].name + "</p>";
+      }
+      document.getElementById("json-content").innerHTML = newContent;
+    }
+    function clearJSON() {
+      document.getElementById("json-content").innerHTML = "";
+    }
+    </script>
+  </head>
+
+  <body>
+    <h2>AJAX DEMO</h2>
+    <button type="button" onclick="loadJSON()">Get User Names</button>
+    <button type="button" onclick="clearJSON()">Clear JSON</button>
+    <div id="json-content"></div>
+  </div>
+  </body>
+</html>
