@@ -43,6 +43,7 @@ app.delete('/json_file', (req, res) => {
     }
 });
 
-app.listen(8080, () => {
+const port = 8080
+app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`)
 })

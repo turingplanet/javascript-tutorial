@@ -1,13 +1,12 @@
 var express = require('express');
 var app = express();
 app.use(express.json()); // json parser for post request
-const port = 8080
 
 app.get('/home', function(req, res) {
     res.send('<h1>Hello World</h1>');
 });
 
-app.get('/json', function(req, res) {
+app.get('/json_data', function(req, res) {
     const data = require('./data.json'); 
     res.json(data);
 });
@@ -25,6 +24,7 @@ app.post('/handle', function(req, res) {
     res.json(req.body);
 })
 
+const port = 8080
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
