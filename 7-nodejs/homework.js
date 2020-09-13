@@ -5,8 +5,8 @@ app.use(express.json()); // JSON parser for post request
 
 app.get('/json_file', (req, res) => {
     try {
-        const data = require(__dirname + '/' + req.query.name + '.json');
-        res.json(data);
+        let data = fs.readFileSync(`${__dirname}/${req.query.name}.json`)
+        res.json(JSON.parse(data));
     } catch (err) {
         console.error(err);
         res.send({'error': err.toString()});
@@ -22,7 +22,7 @@ app.post('/json_file', (req, res) => {
                 fs.writeFile(fileName, JSON.stringify(bodyData), (err) => { if (err) console.log(err); }); // Create new file
             } else {
                 let fileContent = JSON.parse(fs.readFileSync(fileName, 'utf8')); // Read file content 
-                Object.keys(bodyData).forEach( (key) => {fileContent.key = bodyData[key];});
+                Object.keys(bodyData).forEach( (key) => {fileContent[key] = bodyData[key];});
                 fs.writeFileSync(fileName, JSON.stringify(fileContent)); // Write content to the file
             }
         })

@@ -4,22 +4,26 @@ var app = express();
 app.use(express.json()); // JSON parser for post request
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
     next();
 });
 
+booksJsonFile = __dirname + '/books.json';
+
 app.get('/json_file', (req, res) => {
     try {
-        const data = require(__dirname + '/' + req.query.name + '.json');
-        res.json(data);
+        let data = fs.readFileSync(`${__dirname}/${req.query.name}.json`)
+        res.json(JSON.parse(data));
     } catch (err) {
         console.error(err);
         res.send({'error': err.toString()});
     }
 });
 
+// get book details
 app.get('/book', (req, res) => {
     try {
-        const data = require(__dirname + '/books.json');
+        let data = JSON.parse(fs.readFileSync(booksJsonFile));
         const titleName = req.query.name;
         res.json(data[titleName]);
     } catch (err) {
@@ -37,7 +41,8 @@ app.post('/json_file', (req, res) => {
                 fs.writeFile(fileName, JSON.stringify(bodyData), (err) => { if (err) console.log(err); }); // Create new file
             } else {
                 let fileContent = JSON.parse(fs.readFileSync(fileName, 'utf8')); // Read file content 
-                Object.keys(bodyData).forEach( (key) => {fileContent.key = bodyData[key];});
+                Object.keys(bodyData).forEach( (key) => {fileContent[key] = bodyData[key];});
+                console.log(fileContent);
                 fs.writeFileSync(fileName, JSON.stringify(fileContent)); // Write content to the file
             }
         })
@@ -57,6 +62,15 @@ app.delete('/json_file', (req, res) => {
         res.send({'error': 'Delete file failed.'})
     }
 });
+
+
+app.delete('/book', (req, res) => {
+    let bookTitle = req.query.title;
+    let jsonData = JSON.parse(fs.readFileSync(booksJsonFile));
+    delete jsonData[bookTitle]
+    fs.writeFileSync(booksJsonFile, JSON.stringify(jsonData));
+    res.send({'success': 'File content updated.'});
+})
 
 const port = 8080
 app.listen(port, () => {
