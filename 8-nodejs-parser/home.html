@@ -1,53 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script>
-        function loadBooks() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                displayData(this);
-                }
-            };
-            xhttp.open("GET", "http://localhost:8080/json_file?name=books", true);
-            xhttp.send();
-        }
-        function displayData(xhttp) {
-            var jsonData = JSON.parse(xhttp.responseText);
-            var newContent = "";
-            for (var key in jsonData) {
-                newContent += `<div class="gallery"><a target="_blank" href="${jsonData[key].web_url}">` + 
-                              `<img src="${jsonData[key].image_url}" width="600" height="400"></a>` + 
-                              `<div class='desc'>${key}</div></div>`;
-            }
-            document.getElementById("book-gallery").innerHTML = newContent;
-        }
-        function clearJSON() {
-            document.getElementById("json-content").innerHTML = "";
-        }
-    </script>
-    <style>
-    div.gallery {
-    margin: 5px;
-    border: 1px solid #ccc;
-    float: left;
-    width: 180px;
-    }
-
-    div.gallery:hover {
-    border: 1px solid #777;
-    }
-
-    div.gallery img {
-    width: 100%;
-    height: auto;
-    }
-
-    div.desc {
-    padding: 15px;
-    text-align: center;
-    }
-    </style>
+    <script src='home.js'></script>
+    <link rel="stylesheet" type="text/css" href="home.css"> 
 </head>
 <body>
     <h1>Books</h1>
@@ -56,9 +11,8 @@
     <button type="button">Add New Book</button>
     </div>
 
-    <div id="book-gallery"></div>
-    <br />
-
+    <div id="main-content"></div>
+<!-- 
     <div class="gallery">
     <a target="_blank" href="https://book.douban.com/subject/26829016/">
         <img src="https://img9.doubanio.com/view/subject/s/public/s28891775.jpg" alt="Cinque Terre" width="600" height="400">
@@ -85,6 +39,6 @@
         <img src="https://img9.doubanio.com/view/subject/s/public/s28891775.jpg" alt="Cinque Terre" width="600" height="400">
     </a>
     <div class="desc">Add a description of the image here</div>
-    </div>
+    </div> -->
 </body>
 </html>

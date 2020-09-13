@@ -17,6 +17,17 @@ app.get('/json_file', (req, res) => {
     }
 });
 
+app.get('/book', (req, res) => {
+    try {
+        const data = require(__dirname + '/books.json');
+        const titleName = req.query.name;
+        res.json(data[titleName]);
+    } catch (err) {
+        console.error(err);
+        res.send({'error': err.toString()});
+    }
+})
+
 app.post('/json_file', (req, res) => {
     try {
         const fileName = __dirname + '/' + req.query.name + '.json';
