@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 app.use(express.json()); // JSON parser for post request
 app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); // For POST CORS Error
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
     next();
@@ -10,6 +11,7 @@ app.use(function (req, res, next) {
 
 booksJsonFile = __dirname + '/books.json';
 
+// get books
 app.get('/json_file', (req, res) => {
     try {
         let data = fs.readFileSync(`${__dirname}/${req.query.name}.json`)
@@ -63,7 +65,30 @@ app.delete('/json_file', (req, res) => {
     }
 });
 
+// update book details
+app.post('/book', (req, res) => {
+    try {
+        let bookTitle = req.query.title;
+        let bodyData = req.body;
+        fs.open(booksJsonFile, 'r', (err, fd) => {
+            let fileContent = JSON.parse(fs.readFileSync(booksJsonFile, 'utf8')); // Read file content
+            if('web_url' in bodyData) { fileContent[bookTitle]['web_url'] = bodyData['web_url']; }
+            if('image_url' in bodyData) { fileContent[bookTitle]['image_url'] = bodyData['image_url']; }
+            if('title' in bodyData && bodyData['title'] != bookTitle) {
+                fileContent[bodyData['title']] = fileContent[bookTitle];
+                delete fileContent[bookTitle];
+            }
+            console.log(fileContent);
+            fs.writeFileSync(booksJsonFile, JSON.stringify(fileContent)); // Write content to the file
+        });
+        res.send({'success': 'Update book successfully.'});
+    } catch (err) {
+        console.log(err);
+        res.send({'error': 'Update book failed.'});
+    }
+});
 
+// delete book
 app.delete('/book', (req, res) => {
     let bookTitle = req.query.title;
     let jsonData = JSON.parse(fs.readFileSync(booksJsonFile));
