@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src='home.js'></script>
-    <link rel="stylesheet" type="text/css" href="home.css"> 
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src='./javascript/home.js'></script>
+    <script src='./javascript/crawler.js'></script>
+    <link rel="stylesheet" type="text/css" href="./css/home.css"> 
 </head>
 <body>
     <div id="header">
-        <h1 onClick="loadBooks()">Books</h1>
-        <button>Parse Books</button>
-        <button type="button" onClick="loadBooks()">Load Local Books</button>
-        <button type="button">Add New Book</button>
+        <h1 onClick="loadBooks()">Turing Library</h1>
+        <button type="button" class="btn btn-info" onClick="parseBooks()">Parse Books</button>
+        <script>loadBooks()</script>
+        <button type="button" class="btn btn-info" onClick="loadBooks()">Downloaded Books</button>
+        <button type="button" class="btn btn-info" onClick="addNewBook()">New Book</button>
     </div>
     <div id="main-content"></div>
 </body>
