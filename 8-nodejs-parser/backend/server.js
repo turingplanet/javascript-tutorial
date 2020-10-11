@@ -9,7 +9,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-booksJsonFile = __dirname + '/books.json';
+var booksJsonFile = __dirname + '/books.json';
 
 // get books
 app.get('/json_file', (req, res) => {
@@ -34,7 +34,26 @@ app.put('/json_file', (req, res) => {
         console.log(err);
         res.send({'error': 'Update json file failed.'})
     }
-})
+});
+
+app.post('/json_file', (req, res) => {
+    try {
+        const fileName = __dirname + '/' + 'books.json';
+        let bodyData = req.body;
+        fs.open(fileName, 'r', (err, fd) => {
+            let books = JSON.parse(fs.readFileSync(fileName, 'utf8')); // Read file content
+            bodyData.forEach(newBook => {
+                books.push(newBook);
+            })
+            console.log(books);
+            fs.writeFileSync(fileName, JSON.stringify(books)); // Write content to the file
+        });
+        res.send({'success': 'File successfully updated.'})
+    } catch (err) {
+        console.log(err);
+        res.send({'error': 'Update json file failed.'})
+    }
+});
 
 app.delete('/json_file', (req, res) => {
     try {
