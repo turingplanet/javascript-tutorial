@@ -6,12 +6,24 @@ body {
     text-align: center;
 }
 
+div.booksGallery {
+    width: 100%;
+    /* border: 1px solid green; */
+}
+
+input {
+    margin-top: 10px;
+}
+
 div.gallery {
+    width: 25%;
+    height: 25%;
     margin: 5px;
     border: 1px solid #fff;
     float: left;
-    /* width: 180px; */
-    width: 25%;
+    margin: 0 auto;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
 div.gallery:hover {
@@ -41,4 +53,25 @@ div.desc {
 #bookImage {
     height: 150px;
     width: 100px;
+}
+
+/* Web Crawler CSS */
+tbody {
+    text-align: left;
+    width: 20%;
+    /* left: 40%;
+    right: 40%; */
+}
+.bookTitle {
+    font-size: medium;
+    color: green;
+    font-weight: bold;
+}
+.bookWebURL {
+    font-size: small;
+    color: grey;
+}
+.bookImageURL {
+    font-size: small;
+    color: grey;
 }

@@ -11,16 +11,28 @@ function loadBooks() {
     xhttp.open("GET", "http://localhost:8080/json_file?name=books", true);
     xhttp.send();
 }
+
+function processTitle(title) {
+    if (title.length > 20) {
+        title = title.substring(0, 20) + "...";
+    } 
+    console.log(title);
+    return title
+}
+
 function displayData(xhttp) {
     var books = JSON.parse(xhttp.responseText);
-    var newContent = "";
+    var newContent = "<div class='booksGallery'>";
     books.forEach(function(book) {
+        var processedTitle = processTitle(book.title);
+        book.title = book.title.replace(/\s/g, '%20');
         newContent += `<div class="gallery"><a target="_blank" href="${book.web_url}">` + 
                         `<img id="bookImage" src="${book.image_url}" width="600" height="400"></a>` + 
-                        `<div class='desc'>${book.title}</div>` + 
-                        `<div><button class="btn btn-light" onClick=getBookDetails('${book.title}') style="float:middle">Info</button></div></div>`;
+                        `<div onClick=getBookDetails('${book.title}') class='desc'>${processedTitle}</div></div>`;
+                        // `<div><button class="btn btn-light" onClick=getBookDetails('${book.title}') style="margin-top:10px;float:middle">${processedTitle}</button></div></div>`;
                         // `<button class="btn btn-danger" style="float:right" onClick=deleteBook('${book.title}')>Delete</button></div></div>`;
     })
+    newContent += "</div>";
     document.getElementById("main-content").innerHTML = newContent;
 }
 function clearJSON() {
@@ -52,10 +64,10 @@ function displayBookDetail(bookTitle, xhttp) {
 
 // Update Book Details
 function updateBook(originalTitle) {
-    newTitle = document.getElementById('titleInput').value;
-    newWebUrl = document.getElementById('webUrlInput').value;
-    newImageUrl = document.getElementById('imageUrlInput').value;
-    newJSON  = {'title': newTitle, 'web_url': newWebUrl, 'image_url': newImageUrl};
+    var newTitle = document.getElementById('titleInput').value;
+    var newWebUrl = document.getElementById('webUrlInput').value;
+    var newImageUrl = document.getElementById('imageUrlInput').value;
+    var newJSON  = {'title': newTitle, 'web_url': newWebUrl, 'image_url': newImageUrl};
     updateBookInJSON(originalTitle, newJSON, function(){
         document.getElementById("main-content").innerHTML = `<h1>Book Updated!</h1>`;
     });
@@ -87,17 +99,17 @@ function deleteBookInJson(bookTitle, callback) {
 
 // Add new book
 function addNewBook() {
-    newContent = `<div><label>Title:</label> <input id="titleInput" type="text" value='bookTitle' size='50'></input></div>`;
+    var newContent = `<div><label>Title:</label> <input id="titleInput" type="text" value='bookTitle' size='50'></input></div>`;
     newContent += `<div><label>Web URL:</label> <input id="webUrlInput" type="text" value='webUrl' size='50'></input></div>`;
     newContent += `<div><label>Image URL:</label> <input id="imageUrlInput" type="text" value='imageUrl' size='50'></input></div>`;
     newContent += `<div><button class="btn btn-warning" onClick=addBook() style="float:middle">Add New Book</button></div></div>`;
     document.getElementById("main-content").innerHTML = newContent;
 }
 function addBook() {
-    title = document.getElementById('titleInput').value;
-    webURL = document.getElementById('webUrlInput').value;
-    imageURL = document.getElementById('imageUrlInput').value;
-    newJSON  = {'title': title, 'web_url': webURL, 'image_url': imageURL};
+    var title = document.getElementById('titleInput').value;
+    var webURL = document.getElementById('webUrlInput').value;
+    var imageURL = document.getElementById('imageUrlInput').value;
+    var newJSON  = {'title': title, 'web_url': webURL, 'image_url': imageURL};
     addBookInJSON(newJSON, function(){
         document.getElementById("main-content").innerHTML = `<h1>New Book Added!</h1>`;
     });
