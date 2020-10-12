@@ -35,9 +35,12 @@ div.gallery img {
     height: auto;
 }
 
-div.desc {
+div.galleryTitle {
     padding: 15px;
     text-align: center;
+}
+div.galleryTitle:hover{
+    cursor: pointer;
 }
 
 #main-content {

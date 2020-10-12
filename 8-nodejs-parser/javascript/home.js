@@ -13,8 +13,8 @@ function loadBooks() {
 }
 
 function processTitle(title) {
-    if (title.length > 20) {
-        title = title.substring(0, 20) + "...";
+    if (title.length > 15) {
+        title = title.substring(0, 15) + "...";
     } 
     console.log(title);
     return title
@@ -25,10 +25,10 @@ function displayData(xhttp) {
     var newContent = "<div class='booksGallery'>";
     books.forEach(function(book) {
         var processedTitle = processTitle(book.title);
-        book.title = book.title.replace(/\s/g, '%20');
+        // book.title = book.title.replace(/\s/g, '%20');
         newContent += `<div class="gallery"><a target="_blank" href="${book.web_url}">` + 
                         `<img id="bookImage" src="${book.image_url}" width="600" height="400"></a>` + 
-                        `<div onClick=getBookDetails('${book.title}') class='desc'>${processedTitle}</div></div>`;
+                        `<div onClick=getBookDetails('${book.title.replace(/\s/g, '%20')}') class='galleryTitle'>${processedTitle}</div></div>`;
                         // `<div><button class="btn btn-light" onClick=getBookDetails('${book.title}') style="margin-top:10px;float:middle">${processedTitle}</button></div></div>`;
                         // `<button class="btn btn-danger" style="float:right" onClick=deleteBook('${book.title}')>Delete</button></div></div>`;
     })
@@ -54,11 +54,11 @@ function displayBookDetail(bookTitle, xhttp) {
     var imageUrl = jsonData['image_url'];
     var webUrl = jsonData['web_url'];
     var newContent = `<img id="bookImage" src="${imageUrl}"></a>`;
-    newContent += `<div><label>Title:</label> <input id="titleInput" type="text" value='${bookTitle}' size='50'></input></div>`;
+    newContent += `<div><label>Title:</label> <input id="titleInput" type="text" value='${bookTitle.replaceAll('%20', ' ')}' size='50'></input></div>`;
     newContent += `<div><label>Web URL:</label> <input id="webUrlInput" type="text" value='${webUrl}' size='50'></input></div>`;
     newContent += `<div><label>Image URL:</label> <input id="imageUrlInput" type="text" value='${imageUrl}' size='50'></input></div>`;
-    newContent += `<div><button class="btn btn-success" onClick=updateBook('${bookTitle}') style="float:left">Update</button>` + 
-                  `<button class="btn btn-danger" style="float:right" onClick=deleteBook('${bookTitle}')>Delete</button></div></div>`;
+    newContent += `<div><button class="btn btn-success" onClick=updateBook('${bookTitle}') style="float:middle; margin-right: 50px;">Update</button>` + 
+                  `<button class="btn btn-danger" style="float:middle" onClick=deleteBook('${bookTitle}')>Delete</button></div></div>`;
     document.getElementById("main-content").innerHTML = newContent;
 }
 

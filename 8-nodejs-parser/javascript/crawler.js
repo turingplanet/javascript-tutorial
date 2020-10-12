@@ -11,7 +11,12 @@ function parseBooks() {
 
 function parseURL() {
     var url = document.getElementById('bookListURL').value;
-    document.getElementById("main-content").innerHTML = "<h1>Crawling Books...</h1>";
+    document.getElementById("main-content").innerHTML = 
+    '<div style="width: 3rem; height: 3rem;" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>' + 
+    "<h4>Crawling Books...</h4>";
+    // `<button class="btn btn-primary" type="button" disabled>` + 
+    // `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>` + 
+    // ` Crawling Books...</button>`;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
