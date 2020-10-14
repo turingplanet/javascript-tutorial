@@ -1,5 +1,6 @@
 const fs = require('fs')
 var express = require('express');
+
 var app = express();
 app.use(express.json()); // JSON parser for post request
 app.use(function (req, res, next) {
@@ -8,34 +9,31 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
     next();
 });
-
 var booksJsonFile = __dirname + '/books.json';
 
-// get books
+// Get content from a JSON file
 app.get('/json_file', (req, res) => {
     try {
         let data = fs.readFileSync(`${__dirname}/${req.query.name}.json`)
         res.json(JSON.parse(data));
     } catch (err) {
-        console.error(err);
         res.send({'error': err.toString()});
     }
 });
-
+// Create JSON file
 app.put('/json_file', (req, res) => {
     try {
         const fileName = __dirname + '/' + req.query.name + '.json';
         let bodyData = req.body;
         fs.open(fileName, 'r', (err, fd) => {
-            fs.writeFile(fileName, JSON.stringify(bodyData), (err) => { if (err) console.log(err); }); // Create new file
+            fs.writeFile(fileName, JSON.stringify(bodyData), (err) => { if(err)console.log(err); }); // Create new file
         })
-        res.send({'success': 'File successfully updated.'})
+        res.send({'success': 'File successfully created.'})
     } catch (err) {
-        console.log(err);
-        res.send({'error': 'Update json file failed.'})
+        res.send({'error': err.toString()});
     }
 });
-
+// Update JSON file
 app.post('/json_file', (req, res) => {
     try {
         const fileName = __dirname + '/' + 'books.json';
@@ -45,31 +43,27 @@ app.post('/json_file', (req, res) => {
             bodyData.forEach(newBook => {
                 books.push(newBook);
             })
-            console.log(books);
             fs.writeFileSync(fileName, JSON.stringify(books)); // Write content to the file
         });
         res.send({'success': 'File successfully updated.'})
     } catch (err) {
-        console.log(err);
-        res.send({'error': 'Update json file failed.'})
+        res.send({'error': err.toString()});
     }
 });
-
+// Delete JSON file
 app.delete('/json_file', (req, res) => {
     try {
         fs.unlinkSync(__dirname + "/" + req.query.name + '.json');
         res.send({'success': 'File deleted.'})
     } catch (err) {
-        console.log(err);
-        res.send({'error': 'Delete file failed.'})
+        res.send({'error': err.toString()});
     }
 });
-
-// get book details
+// Get book details
 app.get('/book', (req, res) => {
     try {
         let books = JSON.parse(fs.readFileSync(booksJsonFile));
-        const titleName = req.query.name;
+        const titleName = req.query.title;
         let responseBook = {}
         books.forEach(function(book, index) {
             if (book['title'] == titleName) {
@@ -78,11 +72,9 @@ app.get('/book', (req, res) => {
         })
         res.json(responseBook);
     } catch (err) {
-        console.error(err);
         res.send({'error': err.toString()});
     }
 })
-
 // Add new book
 app.put('/book', (req, res) => {
     try {
@@ -95,16 +87,13 @@ app.put('/book', (req, res) => {
                 'image_url': bookInfo['image_url']
             };
             fileContent.push(newBook);
-            console.log(fileContent);
             fs.writeFileSync(booksJsonFile, JSON.stringify(fileContent)); // Write content to the file
         });
         res.send({'success': 'Add book successfully.'});
     } catch (err) {
-        console.log(err);
-        res.send({'error': 'Add book failed.'});
+        res.send({'error': err.toString()});
     }
 })
-
 // Update book details
 app.post('/book', (req, res) => {
     try {
@@ -130,11 +119,9 @@ app.post('/book', (req, res) => {
             }
         });
     } catch (err) {
-        console.log(err);
-        res.send({'error': 'Update book failed.'});
+        res.send({'error': err.toString()});
     }
 });
-
 // Delete book
 app.delete('/book', (req, res) => {
     let bookTitle = req.query.title;

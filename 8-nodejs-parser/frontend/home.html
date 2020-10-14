@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src='./home.js'></script>
+        <script src='./crawler.js'></script>
+        <link rel="stylesheet" type="text/css" href="./home.css"> 
+    </head>
+    <body>
+        <div id="header">
+            <h1 onClick="loadBooks()">TURING LIBRARY</h1>
+            <button type="button" class="btn btn-info" onClick="parseBooks()">Parse Books</button>
+            <script>loadBooks()</script>
+            <button type="button" class="btn btn-info" onClick="loadBooks()">Downloaded Books</button>
+            <button type="button" class="btn btn-info" onClick="addNewBook()">New Book</button>
+        </div>
+        <div id="main-content"></div>
+    </body>
+</html>

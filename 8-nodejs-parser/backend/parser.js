@@ -1,4 +1,6 @@
+const puppeteer = require('puppeteer');
 var express = require('express');
+
 var app = express();
 app.use(express.json()); // JSON parser for post request
 app.use(function (req, res, next) {
@@ -7,7 +9,6 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
     next();
 });
-const puppeteer = require('puppeteer');
 
 var books = [];
 
@@ -33,12 +34,8 @@ async function getBookInfo(url, length, res) {
     const [image] = await page.$x('//*[@id="coverImage"]');
     const src = await image.getProperty('src');
     const txt = await src.jsonValue();
-    // console.log({txt}.txt);
-    // Get title 
-    // const [title] = await page.$x('//*[@id="bookTitle"]');
     const title = await page.$('#bookTitle');
     const text = await (await title.getProperty('textContent')).jsonValue();
-    // console.log(text.trim());
     var newObj = {
         'title': text.trim(),
         'web_url': url,
@@ -53,17 +50,11 @@ async function getBookInfo(url, length, res) {
     browser.close();
 }
 
-// getBookInfo('https://www.goodreads.com/book/show/95708.The_Now_Habit?from_search=true&from_srp=true&qid=jj1bcCHcPy&rank=2');
-
-// scrapeAmazon('https://www.goodreads.com/search?q=programming');
-
 app.get('/crawler', (req, res) => {
     try {
         let url = req.query.url;
-        console.log(url);
         scrapeAmazon(url, res);
     } catch (err) {
-        console.error(err);
         res.send({'error': err.toString()});
     }
 });

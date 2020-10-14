@@ -1,10 +1,9 @@
-// Load local books
 var books = [];
 
 function parseBooks() {
-    var doubleSeedURL = "https://www.goodreads.com/search?q=programming";
+    var defaultURL = "https://www.goodreads.com/search?q=programming";
     var newContent = `<h3>Douban Book Cralwer</h3>` + 
-                     `<div><label>Book List URL:</label> <input id="bookListURL" value=${doubleSeedURL} type="text" size='50'></input></div>` + 
+                     `<div><label>Book List URL:</label> <input id="bookListURL" value=${defaultURL} type="text" size='50'></input></div>` + 
                      `<div><button class="btn btn-success" onClick=parseURL() style="float:middle">Parse Books</button></div>`;
     document.getElementById("main-content").innerHTML = newContent;
 }
@@ -14,9 +13,6 @@ function parseURL() {
     document.getElementById("main-content").innerHTML = 
     '<div style="width: 3rem; height: 3rem;" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>' + 
     "<h4>Crawling Books...</h4>";
-    // `<button class="btn btn-primary" type="button" disabled>` + 
-    // `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>` + 
-    // ` Crawling Books...</button>`;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -42,7 +38,7 @@ function displayBooks(xhttp) {
     document.getElementById("main-content").innerHTML = newContent;
 }
 
-function addAllBooks(callback) {
+function addAllBooks() {
     const crawlerURL = 'http://localhost:8080';
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", `${crawlerURL}/json_file`, true);
