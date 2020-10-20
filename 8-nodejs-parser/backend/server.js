@@ -81,12 +81,12 @@ app.put('/book', (req, res) => {
         let bookInfo = req.body;
         fs.open(booksJsonFile, 'r', (err, fd) => {
             let fileContent = JSON.parse(fs.readFileSync(booksJsonFile, 'utf8')); // Read file content
-            let newBook = {
-                'title': bookInfo['title'],
-                'web_url': bookInfo['web_url'],
-                'image_url': bookInfo['image_url']
-            };
-            fileContent.push(newBook);
+            // let newBook = {
+            //     'title': bookInfo['title'],
+            //     'web_url': bookInfo['web_url'],
+            //     'image_url': bookInfo['image_url']
+            // };
+            fileContent.push(bookInfo);
             fs.writeFileSync(booksJsonFile, JSON.stringify(fileContent)); // Write content to the file
         });
         res.send({'success': 'Add book successfully.'});
@@ -111,7 +111,6 @@ app.post('/book', (req, res) => {
                 }
             })
             if (found) {
-                console.log(books);
                 fs.writeFileSync(booksJsonFile, JSON.stringify(books)); // Write content to the file
                 res.send({'success': 'Update book successfully.'});
             } else {
@@ -132,9 +131,8 @@ app.delete('/book', (req, res) => {
             bookIndex = index;
         }
     })
-    if (bookIndex > -1) { 
+    if (bookIndex > -1) {
         books.splice(bookIndex, 1);
-        console.log(books);
         fs.writeFileSync(booksJsonFile, JSON.stringify(books));
         res.send({'success': 'Delete book successfully.'});
     } else {
